@@ -79,12 +79,18 @@ void virt::fs::copy_content(virt::fs::directory* source, virt::fs::directory* de
 
 	for (std::map<std::string, virt::fs::directory*>::iterator it = source->subdir.begin();
 			it != source->subdir.end(); it++){
+		if (it->first == "" || it->first == "." || it->first == "..")
+			continue;
+
 		destination->add_subdir(it->second->get_name(), false);
 		virt::fs::copy_content(it->second, destination->subdir[it->second->name]);
 	}
 }
 
 bool virt::fs::move_subdir(std::string dirname, virt::fs::directory* source, virt::fs::directory* destination){
+	if (dirname == "" || dirname == "." || dirname == "..")
+		return false;
+
 	std::map<std::string, virt::fs::directory*>::iterator it = source->subdir.find(dirname);
 	if (it == source->subdir.end())
 		return false;

@@ -12,6 +12,8 @@
 #include "utility/help.h"
 #include "utility/touch.h"
 #include "utility/rm.h"
+#include "utility/mv.h"
+#include "utility/cp.h"
 
 // We are too lazy to implement the input/output to physical drive.
 #include "lazy_initialize.h"
@@ -30,6 +32,8 @@ int main(){
 	virt::util::help* help_app = new virt::util::help(&os);
 	virt::util::touch* touch_app = new virt::util::touch(&os);
 	virt::util::rm* rm_app = new virt::util::rm(&os);
+	virt::util::mv* mv_app = new virt::util::mv(&os);
+	virt::util::cp* cp_app = new virt::util::cp(&os);
 
 	// install them into our operating system
 	os.install_utility("shell", static_cast<virt::os::utility*>(sh_app));
@@ -41,6 +45,8 @@ int main(){
 	os.install_utility("help", static_cast<virt::os::utility*>(help_app));
 	os.install_utility("touch", static_cast<virt::os::utility*>(touch_app));
 	os.install_utility("rm", static_cast<virt::os::utility*>(rm_app));
+	os.install_utility("mv", static_cast<virt::os::utility*>(mv_app));
+	os.install_utility("cp", static_cast<virt::os::utility*>(cp_app));
 
 	// launch our main shell
 	sample_filesystem(os);
@@ -56,6 +62,8 @@ int main(){
 	delete help_app;
 	delete touch_app;
 	delete rm_app;
+	delete mv_app;
+	delete cp_app;
 
 	return 0;
 }
