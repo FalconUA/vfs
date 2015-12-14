@@ -12,7 +12,11 @@ namespace util {
 	class touch: public virt::os::utility {
 	public:
 		touch(virt::operatingsystem* os):
-			utility(os) {}
+				utility(os) {
+			description = "Создаёт файл с заданным текстом и названием в текущей папке. Для детальной информации пропишите 'help touch'.\n";
+
+			help_text = description + "Синтаксис: touch [filename] [content], где [filename] (пишите без квадратных скобочек) - это название файла которую хотите создать (обязательный параметр). Название не должно содержать символы '/' или ' ', и не должен совпадать с резервированными названиями '', '.', '..'. [content] - необязательный параметр, который задаёт текст файла.\n";
+		}
 
 		std::string launch(std::string param){
 			virt::util::shell* sh;
@@ -26,6 +30,11 @@ namespace util {
 
 			std::size_t p = std::min(param.find(' '), param.length());	
 			std::string filename = param.substr(0, p);
+
+			if (filename.find(' ') != std::string::npos || filename.find('/') != std::string::npos
+					|| filename == "" || filename == "." || filename == "..")
+				return "Invalid file name. Please see 'help touch' for more information.\n";
+
 			param.erase(0, p+1);
 
 			sh->shell_iterator.get_working_dir()->add_file(filename, param, false);

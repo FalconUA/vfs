@@ -11,6 +11,10 @@
 #include "utility/cat.h"
 #include "utility/help.h"
 #include "utility/touch.h"
+#include "utility/rm.h"
+
+// We are too lazy to implement the input/output to physical drive.
+#include "lazy_initialize.h"
 
 int main(){
 	// creating virtual operation system
@@ -25,6 +29,7 @@ int main(){
 	virt::util::pwd* pwd_app = new virt::util::pwd(&os);
 	virt::util::help* help_app = new virt::util::help(&os);
 	virt::util::touch* touch_app = new virt::util::touch(&os);
+	virt::util::rm* rm_app = new virt::util::rm(&os);
 
 	// install them into our operating system
 	os.install_utility("shell", static_cast<virt::os::utility*>(sh_app));
@@ -35,9 +40,11 @@ int main(){
 	os.install_utility("pwd", static_cast<virt::os::utility*>(pwd_app));
 	os.install_utility("help", static_cast<virt::os::utility*>(help_app));
 	os.install_utility("touch", static_cast<virt::os::utility*>(touch_app));
+	os.install_utility("rm", static_cast<virt::os::utility*>(rm_app));
 
 	// launch our main shell
-	os.launch_utility("shell", "shell~");
+	sample_filesystem(os);
+	os.launch_utility("shell", "default shell");
 
 	// good boys always clean their big RAM after deploying :)
 	delete sh_app;
@@ -48,6 +55,7 @@ int main(){
 	delete pwd_app;
 	delete help_app;
 	delete touch_app;
+	delete rm_app;
 
 	return 0;
 }

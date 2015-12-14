@@ -16,6 +16,10 @@ HEADERS = \
 		  uitlity/pwd.h \
 		  utility/shell.h \
 		  utility/help.h \
+		  utility/rm.h \
+		  utility/touch.h \
+		  lazy_initialize.h \
+
 
 OBJECTS = \
 		  vfs/directory.o \

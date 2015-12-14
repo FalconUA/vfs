@@ -16,7 +16,9 @@ namespace util {
 	public:
 		help(virt::operatingsystem* os):
 				utility(os) {
-			description = "Showing this help. See \"help help\" for more information.";
+			description = "Показывает эту инструкцию, или инструкцию для конкретного приложения в текущей виртуальной системе. Для детальной инструкции пропишите 'help help'\n";
+
+			help_text = description + "Синтаксис: help [utility_name] без квадратных скобочек, где utility_name - название утилиты от которой хотите извлечь инструкцию. При пустом utility_name, данная команда покажет краткое описание всех установленных приложении в данной виртуальной системе.\n";
 		}
 
 		std::string launch(std::string param){
@@ -30,10 +32,19 @@ namespace util {
 				param.erase(param.length()-1, 1);
 
 			std::stringstream ss;
-			for (std::map<std::string, virt::os::utility*>::iterator it = working_os->utilities.begin(); it != working_os->utilities.end(); it++){
-				ss << std::endl << std::setw(10) << it->first << " - ";
-			    ss << it->second->description << std::endl;
+			if (param != ""){
+				std::map<std::string, virt::os::utility*>::iterator it = 
+					working_os->utilities.find(param);
+				if (it != working_os->utilities.end())
+					return working_os->utilities[param]->help_text + "\n";
 			}
+			
+			for (std::map<std::string, virt::os::utility*>::iterator it = working_os->utilities.begin(); it != working_os->utilities.end(); it++){
+				ss << std::endl << ">>>> " << it->first << std::endl;
+			    ss << it->second->description;
+			}
+
+			ss << std::endl << ">>>> exit" << std::endl << "Выходит из текущего консоля." << std::endl << std::endl;
 
 			return ss.str();
 		}

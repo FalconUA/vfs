@@ -13,20 +13,23 @@ namespace util {
 	public:
 		cd(virt::operatingsystem* os):
 				utility(os) {
-			description = "Move into the directory in parameter. See \"help cd\" for more information.";
+			description = "Перемещается в указанном в параметре папку. Для более детальной информации пропишите 'help cd'.\n";
+			help_text = description + "Синтаксис: cd [path], где [path] (пишите без квадратных скобочек) это путь к папке в которую хотите переместиться. ВАЖНО: если [path] начинается с символа '/', то это означает что мы будем перемещаться от корня файловой системы, иначе будем перемещаться от текущей папки.\n";
 		}
 
 		std::string launch(std::string param){
 			virt::util::shell* sh;
 			if ((sh = dynamic_cast<virt::util::shell*>(working_os->app("shell"))) == NULL)
-				return "ERROR: No module named \"shell\" found!";
+				return "ERROR: No module named \"shell\" found!\n";
 
 			while (param[0] == ' ')
 				param.erase(0, 1);
 			while (param[param.length()-1] == ' ')
 				param.erase(param.length()-1, 1);
 
-			sh->shell_iterator.move_to(param);
+			bool s = sh->shell_iterator.move_to(param);
+			if (!s)
+				return "No such directory. See 'help cd' for more information";
 			return "";
 		}
 	};

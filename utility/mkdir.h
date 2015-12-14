@@ -12,7 +12,11 @@ namespace util {
 	class mkdir: public virt::os::utility {
 	public:
 		mkdir(virt::operatingsystem* os):
-			utility(os) {}
+				utility(os) {
+			description = "Создаёт папку с заданным именем в текущей папке. Для более детальной информации пропишите 'help mkdir'.\n";
+
+			help_text = description + "Синтаксис: mkdir [foldername], где [foldername] (писать без квадратных скобочек) это название папки которую хотите создать. Будьте внимательны: не допускаются названия с символами '/' и ' ', а так же запрещаются названия '', '.', '..'!\n";
+		}
 
 		std::string launch(std::string param){
 			virt::util::shell* sh;
@@ -25,7 +29,10 @@ namespace util {
 				param.erase(param.length()-1, 1);
 
 			if (param.find('/') != std::string::npos || param.find(' ') != std::string::npos)
-				return ("invalid character '/' or ' ' in filename");
+				return ("Invalid character '/' or ' ' in filename");
+
+			if (param == "" || param == "." || param == "..")
+				return ("Invalid file name. See 'help mkdir' for more information");
 
 			bool res = sh->shell_iterator.get_working_dir()->add_subdir(param, false);
 			if (!res)

@@ -62,6 +62,9 @@ bool virt::fs::directory::add_subdir(std::string dirname, bool forced){
 		if (subdir.find(dirname) != subdir.end())
 			return false; 
 
+	if (files.find(dirname) != files.end())
+		return false;
+
 	virt::fs::directory* new_subdir = new virt::fs::directory(this, dirname);
 	this->remove_subdir(dirname);
 	this->subdir[dirname] = new_subdir;
@@ -109,6 +112,9 @@ bool virt::fs::directory::add_file(std::string filename, std::string content, bo
 	if (!forced)
 		if (this->files.find(filename) != this->files.end())
 			return false;
+
+	if (this->subdir.find(filename) != this->subdir.end())
+		return false;
 
 	virt::fs::file* temp = new virt::fs::file(this, filename);
 	temp->content = content;

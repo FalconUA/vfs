@@ -12,7 +12,11 @@ namespace util {
 	class pwd: public virt::os::utility {
 	public:
 		pwd(virt::operatingsystem* os):
-			utility(os) {}
+				utility(os) {
+			description = "Выводит полный путь от корня файловой системы до текущей папки. Для детальной информации пропишите 'help pwd'.\n";
+
+			help_text = description + "Синтаксис: pwd - без параметров. Папка '/' означает корневой каталог файловой системы.\n";
+		}
 
 		std::string launch(std::string param){
 			virt::util::shell* sh;

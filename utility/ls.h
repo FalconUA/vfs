@@ -14,7 +14,9 @@ namespace util {
 	public:
 		ls(virt::operatingsystem* os):
 				utility(os) {
-			description = "Lists all files and folders in current directory. see \"help ls\" for more information";
+			description = "Выводит список всех файлов и папок в текущей папке. Для детальной информации пропишите 'help ls'.\n";
+
+			help_text = description + "Синтаксис: ls - без дополнительных параметров. Обратите внимание, что папка '.' обозначает текущую папку, а папка '..' обозначает предыдущую. Для корня файловой системы '..' обращает в самого себя, т.е. в корень.\n";
 		}
 
 		std::string launch(std::string param){
